@@ -1,0 +1,303 @@
+{% extends 'cook/midheader.html' %}
+{% load staticfiles %}
+{% block title %}Recipe Detail{% endblock %}
+{% block body %}
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-8">
+					<div class="blog-post-area">
+						<h2 class="title text-center">Recipe you like</h2>
+						<div class="single-blog-post">
+							<h2>{{ one_recipe.title }}</h2>
+							<div class="post-meta">
+								<ul>
+									<li><i class="fa fa-user"></i> {{ one_recipe.username }}</li>
+								</ul>
+
+								<span>
+                                    <i>Rating: </i>
+                                    <i>{{ rating }}</i>
+                                    <i></i>
+								</span>
+
+							</div>
+							<section id="slider"><!--slider-->
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+                                                <ol class="carousel-indicators">
+                                                    <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
+                                                    <li data-target="#slider-carousel" data-slide-to="1"></li>
+                                                    <li data-target="#slider-carousel" data-slide-to="2"></li>
+                                                </ol>
+                                                <div class="carousel-inner">
+                                                    {% with count=0  %}
+                                                      {% for img in recipe_img %}
+                                                            {% if count == 0 %}
+                                                                {% with count=1 %}
+                                                                {% endwith %}
+                                                            <div class="item active">
+                                                            {% else %}
+                                                                <div class="item">
+                                                         {% endif %}
+                                                            <div class="col-sm-8">
+                                                          <img src="{{ img.img.url }}" class="girl img-responsive" alt="" />
+                                                            </div>
+                                                            </div>
+                                                          {% endfor %}
+                                                      {% endwith %}
+
+                                                </div>
+                                                <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </a>
+                                                <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+                                                    <i class="fa fa-angle-right"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <h2 class="title text-center">Steps</h2>
+							<p>{{ one_recipe.steps }}</p> <br>
+						</div>
+					</div><!--/blog-post-area-->
+
+					<div class="media commnets">
+                        <h2 class="title text-center">About the author</h2>
+						<a class="pull-left" href="#">
+							<img>
+						</a>
+						<div class="media-body">
+							<h4>{{ one_recipe.username.username }}</h4>
+							<h5>{{ one_recipe.username.profile.introduction }}</h5>
+						</div>
+					</div><!--Comments-->
+
+                    {% if all_relate.count > 0 %}
+                    <div class="recommended_items"><!--recommended_items-->
+						<h2 class="title text-center">Related Recipes</h2>
+						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+							<div class="carousel-inner">
+                                    {% for relate in all_relate %}
+                                        {% if forloop.counter0|divisibleby:"3" %}
+                                            {% if forloop.counter == 1 %}
+                                                <div class="item active">
+                                                {% else %}
+                                                <div class="item">
+                                                {% endif %}
+                                        {% endif %}
+									<div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+													<img />
+													<h2>&nbsp;</h2>
+													<a href="{% url 'cook:a_recipe' relate.relatedrid.rid %}" class="btn btn-default add-to-cart">{{ relate.relatedrid.title }}</a>
+                                                    <p>&nbsp;</p>
+                                                </div>
+
+											</div>
+										</div>
+									</div>
+                                        {% if forloop.counter|divisibleby:"3" or forloop.counter == all_relate.count %}
+                                        </div>
+                                        {% endif %}
+									{% endfor %}
+							</div>
+							 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+								<i class="fa fa-angle-left"></i>
+							  </a>
+							  <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+								<i class="fa fa-angle-right"></i>
+							  </a>
+						</div>
+					</div><!--/recommended_items-->
+                    {% endif %}
+
+					<div class="response-area">
+						<h2>{{ all_review.count }} Reviews</h2>
+						<ul class="media-list">
+                            {% for review in all_review %}
+							<li class="media">
+
+								<a class="pull-left" href="#">
+									<img>
+								</a>
+								<div class="media-body">
+									<ul class="sinlge-post-meta">
+										<li><i class="fa fa-user"></i>{{ review.username.username }}</li>
+										<li><i class="fa fa-clock-o"></i> {{ review.time.time }}</li>
+										<li><i class="fa fa-calendar"></i> {{ review.time.date }}</li>
+									</ul>
+									<h5>{{ review.text }}</h5>
+                                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal{{ review.revid }}">
+                                        <i class="fa fa-reply"></i> Read More
+                                    </button>
+
+                                    <!--modal begin-->
+                                    <div class="modal fade" id="myModal{{ review.revid }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">{{ review.title }}</h4>
+                                              <ul class="sinlge-post-meta">
+                                                <li><i class="fa fa-user"></i>{{ review.username.username }}</li>
+                                                <li><i class="fa fa-clock-o"></i> {{ review.time.time }}</li>
+                                                <li><i class="fa fa-calendar"></i> {{ review.time.date }}</li>
+                                              </ul>
+                                          </div>
+                                            <div class="modal-body">
+                                           <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                              <!-- Indicators -->
+                                              <ol class="carousel-indicators">
+                                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                              </ol>
+
+                                              <!-- Wrapper for slides -->
+                                              <div class="carousel-inner" role="listbox">
+                                                {% with count=0  %}
+                                                  {% for img in review_img %}
+                                                        {% if img.revid.revid == review.revid %}
+                                                            {% if count == 0 %}
+                                                            <div class="item active">
+                                                            {% else %}
+                                                                <div class="item">
+                                                         {% endif %}
+                                                  <img src="{{ img.img.url }}" alt="">
+                                                    </div>
+                                                    {% endif %}
+                                                  {% endfor %}
+                                              {% endwith %}
+                                              </div>
+
+
+                                              <!-- Controls -->
+                                              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                              </a>
+                                              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                              </a>
+                                            </div>
+                                            </div>
+
+                                          <div class="modal-body">
+                                           <h3 class="title text-center">Review</h3>
+							                <h5>{{ review.text }}</h5> <br>
+                                             <h3 class="title text-center">Suggestion</h3>
+							                <h5>{{ review.suggestion }}</h5> <br>
+                                              <h3 class="title text-center">Rating</h3>
+							                <h5>{{ review.rating }}</h5> <br>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div><!--modal end-->
+
+
+								</div>
+							</li>
+                            {% endfor %}
+						</ul>
+					</div><!--/Response-area-->
+
+                    <div class="replay-box">
+                    <div class="row">
+                        <form action="{% url 'cook:a_recipe' one_recipe.rid %}" method="post" enctype="multipart/form-data">
+                        <div class="col-sm-4">
+                            <h2>Write a Review</h2>
+                            <div class="blank-arrow">
+                                <label>Title</label>
+                            </div>
+                            <input type="text" id="title" name="title">
+                            <div class="blank-arrow">
+                                {% csrf_token %}
+                                {{ formset.management_form }}
+                                {% for form in formset.forms %}
+                                    {{ form }}
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                        <div class="col-sm-8">
+
+                            <div class="text-area">
+                                <div class="blank-arrow">
+                                    <label>Text</label>
+                                </div>
+                                <textarea id="text" name="text" rows="3"></textarea>
+                            </div>
+                            <div class="text-area">
+                                <div class="blank-arrow">
+                                    <label>Suggestions</label>
+                                </div>
+                                <textarea id="suggestion" name="suggestion" rows="3"></textarea>
+                            </div>
+                            <br>
+                            <div class="blank-arrow">
+                                <label>Rating</label>
+                            </div>
+                            <select id="rating" name="rating" type="number" class="btn btn-default">
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">1</option>
+                                <option value="1">1</option>
+                             </select>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </div>
+                        </form>
+                    </div>
+                </div><!--/Repaly Box-->
+
+                    </div>
+                <div class="col-sm-4">
+					<div class="left-sidebar">
+						<h2>Tags</h2>
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+						    {% for tag in all_tag %}
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="{% url 'cook:search_tag' tag.tag %}">{{ tag.tag }}</a></h4>
+								</div>
+							</div>
+                            {% endfor %}
+						</div><!--/category-products-->
+
+                        <h2>Servings</h2>
+						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title"><a href="#">{{ one_recipe.servings }}</a></h4>
+								</div>
+							</div>
+						</div><!--/category-products-->
+
+						<div class="brands_products"><!--brands_products-->
+							<h2>Ingredients</h2>
+							<div class="brands-name">
+								<ul class="nav nav-pills nav-stacked">
+                                    {% for ingre in all_ingre %}
+									<li><a href=""> {{ ingre.iid.ingredient }}<span class="pull-right">{{ ingre.quantities }} g</span></a></li>
+                                    {% endfor %}
+								</ul>
+							</div>
+						</div><!--/brands_products-->
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

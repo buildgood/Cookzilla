@@ -1,0 +1,26 @@
+{% extends 'cook/recipe.html' %}
+{% block stag %}{% endblock %}
+{% load staticfiles %}
+
+{% block item %}
+<div class="col-sm-9 padding-right">
+    <div class="features_items"><!--features_items-->
+        <h2 class="title text-center">Events you like</h2>
+
+        {% for event in all_event %}
+        <div class="col-sm-4">
+            <div class="product-image-wrapper">
+                <div class="single-products">
+                    <div class="productinfo text-center">
+                        <img />
+                        <h2>{{ event.title }}</h2>
+                        <p>by Group <h5>{{ event.gid.name }}</h5></p>
+                        <a href="{% url 'cook:a_event' event.eid %}" class="btn btn-default add-to-cart">View Detail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div><!--features_items-->
+{% endblock %}

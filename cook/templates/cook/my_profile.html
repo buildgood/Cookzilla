@@ -1,0 +1,55 @@
+{% extends 'cook/account.html' %}
+{% load staticfiles %}
+
+{% block manage %}
+<div class="col-sm-9 padding-right">
+    <h2 class="title text-center">My Profile</h2>
+    <div class="replay-box"><!--features_items-->
+        <div class="col-sm-9">
+            <form action="{% url 'cook:update_user' %}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                {% csrf_token %}
+              <div class="blank-arrow">
+                <label class="col-sm-offset-3 col-sm-2">Username</label>
+                <div class="col-sm-7">
+                  <input type="text" id="username" name="username" value="{{ user.username }}" readonly="readonly">
+                </div>
+              </div>
+              <div class="blank-arrow">
+                <label class="col-sm-offset-3 col-sm-2">Email</label>
+                <div class="col-sm-7">
+                  <input type="email" id="email" name="email" value="{{ user.email }}">
+                </div>
+              </div>
+              <div class="blank-arrow">
+                <label class="col-sm-offset-3 col-sm-2">First Name</label>
+                <div class="col-sm-7">
+                  <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+                </div>
+              </div>
+              <div class="blank-arrow">
+                <label class="col-sm-offset-3 col-sm-2">Last Name</label>
+                <div class="col-sm-7">
+                  <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+                </div>
+              </div>
+              <div class="text-area">
+              <div class="blank-arrow">
+                <label class="col-sm-offset-3 col-sm-2">Introduction</label>
+                <div class="col-sm-7">
+                  <textarea id="introduction" name="introduction" rows="6">{{ user.profile.introduction }}</textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-6 col-sm-5">
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+              </div>
+            </form>
+            <br>
+            <br>
+            <br>
+        </div>
+    </div><!--features_items-->
+</div>
+
+{% endblock %}

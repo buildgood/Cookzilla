@@ -1,0 +1,73 @@
+{% extends 'cook/upheader.html' %}
+{% load staticfiles %}
+{% block body %}
+<body>
+    <br>
+    <br>
+	<section id="slider"><!--slider-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="slider-carousel" class="carousel slide" data-ride="carousel">
+						<ol class="carousel-indicators">
+							<li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
+							<li data-target="#slider-carousel" data-slide-to="1"></li>
+							<li data-target="#slider-carousel" data-slide-to="2"></li>
+						</ol>
+						
+						<div class="carousel-inner">
+							<div class="item active">
+                                <div class="col-sm-3">
+									<h1><span>C</span>ookzilla</h1>
+									<h2>Find the recipe you like</h2>
+									<p>Whether you're looking for a recipe all of the time, we've rounded up our all-time-favorite,
+                                        flavor-packed vegetarian recipes for any and every occasion.</p>
+                                    <a href="{% url 'cook:login_user' %}"><button type="button" class="btn btn-default get">Join now</button></a>
+								</div>
+								<div class="col-sm-9">
+									<img src="{%  static 'cook/images/home/1.png' %}" class="girl img-responsive" alt="" />
+									
+								</div>
+							</div>
+							<div class="item">
+								<div class="col-sm-3">
+									<h1><span>C</span>ookzilla</h1>
+									<h2>Share your recipes</h2>
+									<p>Share the recipe with the others and you'll have fun with it.</p>
+                                    <a href="{% url 'cook:login_user' %}"><button type="button" class="btn btn-default get">Join now</button></a>
+								</div>
+								<div class="col-sm-9">
+									<img src="{%  static 'cook/images/home/2.png' %}" class="girl img-responsive" alt="" />
+								</div>
+							</div>
+							
+							<div class="item">
+								<div class="col-sm-3">
+									<h1><span>C</span>ookzilla</h1>
+									<h2>Take part in the events</h2>
+									<p>Join the events and hang out with other people.</p>
+                                    <a href="{% url 'cook:login_user' %}"><button type="button" class="btn btn-default get">Join now</button></a>
+								</div>
+								<div class="col-sm-9">
+									<img src="{%  static 'cook/images/home/3.png' %}" class="girl img-responsive" alt="" />
+								</div>
+							</div>
+							
+						</div>
+						
+						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+							<i class="fa fa-angle-left"></i>
+						</a>
+						<a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+							<i class="fa fa-angle-right"></i>
+						</a>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</section><!--/slider-->
+	<br>
+{% endblock %}
+</body>
+</html>

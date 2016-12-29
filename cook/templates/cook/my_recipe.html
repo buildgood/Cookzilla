@@ -1,0 +1,37 @@
+{% extends 'cook/account.html' %}
+{% load staticfiles %}
+
+{% block panel %}
+<div class="response-area" align="right">
+    <a href="{% url 'cook:add_recipe' %}" ><button type="button" class="btn btn-primary">
+        <i class="fa fa-reply"></i> Add Recipe
+    </button></a>
+</div>
+{% endblock %}
+
+{% block manage %}
+<div class="col-sm-9 padding-right">
+    <div class="features_items"><!--features_items-->
+        <h2 class="title text-center">My Recipes</h2>
+        {% for recipe in all_recipe %}
+        <div class="col-sm-4">
+            <div class="product-image-wrapper">
+                <div class="single-products">
+                    <div class="productinfo text-center">
+                        <img />
+                        <h2>{{ recipe.title }}&nbsp;</h2>
+                        <p>&nbsp;</p>
+                        <a href="{% url 'cook:a_recipe' recipe.rid %}" class="btn btn-default add-to-cart">Read More</a>
+                    </div>
+                </div>
+                <div class="choose">
+                    <ul class="nav nav-pills nav-justified">
+                        <li><a href="{% url 'cook:delete_recipe' recipe.rid %}"><i class="fa fa-plus-square"></i>Delete</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    </div><!--features_items-->
+{% endblock %}

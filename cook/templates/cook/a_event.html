@@ -1,0 +1,190 @@
+{% extends 'cook/midheader.html' %}
+{% load staticfiles %}
+{% block body %}
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="blog-post-area">
+                    <h2 class="title text-center">Event you like</h2>
+                    <div class="single-blog-post">
+                        <h2>{{ one_event.title }}</h2>
+                        <div class="post-meta">
+                            <ul>
+                                <a href="{% url 'cook:a_group' one_group.gid %}">
+                                    <li><i class="fa fa-user"></i> {{ one_group.name }}</li>
+                                </a>
+                            </ul>
+                        </div>
+                        <a href="">
+                            <img src="{% static 'cook/images/home/event.png' %}" alt="">
+                        </a>
+                        <h2 class="title text-center">Description</h2>
+                        <h5>{{ one_event.description }}</h5> <br>
+                    </div>
+                </div><!--/blog-post-area-->
+
+                <div class="media commnets">
+                    <h2 class="title text-center">About the group</h2>
+                    <a class="pull-left" href="#">
+                        <img>
+                    </a>
+                    <div class="media-body">
+                        <a href="{% url 'cook:a_group' one_group.gid %}"><h4 class="media-heading">{{ one_group.name }}</h4></a>
+                        <h5>{{ one_group.description }}</h5>
+                    </div>
+                </div><!--Comments-->
+
+                <div class="response-area">
+                    <h2>{{ all_report.count }} Reports</h2>
+                    <ul class="media-list">
+                        {% for report in all_report %}
+                        <li class="media">
+
+                            <a class="pull-left" href="#">
+                                <img>
+                            </a>
+                            <div class="media-body">
+                                <ul class="sinlge-post-meta">
+                                    <li><i class="fa fa-user"></i>{{ report.username.username.username }}</li>
+                                    <li><i class="fa fa-clock-o"></i> {{ report.time.time }}</li>
+                                    <li><i class="fa fa-calendar"></i> {{ report.time.date }}</li>
+                                </ul>
+                                <p>{{ report.description }}</p>
+                                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal{{ report.repid }}">
+                                    <i class="fa fa-reply"></i> Read More
+                                </button>
+
+                                <!--modal begin-->
+                                <div class="modal fade" id="myModal{{ report.repid }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel"></h4>
+                                          <ul class="sinlge-post-meta">
+                                            <li><i class="fa fa-user"></i>{{ report.username.username.username }}</li>
+                                            <li><i class="fa fa-clock-o"></i> {{ report.time.time }}</li>
+                                            <li><i class="fa fa-calendar"></i> {{ report.time.date }}</li>
+                                          </ul>
+                                      </div>
+                                        <div class="modal-body">
+                                       <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                                          <!-- Indicators -->
+                                          <ol class="carousel-indicators">
+                                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                                          </ol>
+
+                                          <!-- Wrapper for slides -->
+                                          <div class="carousel-inner" role="listbox">
+                                              {% with count=0  %}
+                                              {% for img in all_img %}
+                                                    {% if img.repid.repid == report.repid %}
+                                                        {% if count == 0 %}
+                                                            {% with count=1 %}
+                                                            {% endwith %}
+                                                        <div class="item active">
+                                                        {% else %}
+                                                            <div class="item">
+                                                     {% endif %}
+                                              <img src="{{ img.img.url }}" alt="">
+                                                </div>
+                                                {% endif %}
+                                              {% endfor %}
+                                          {% endwith %}
+                                          </div>
+
+
+                                          <!-- Controls -->
+                                          <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                          </a>
+                                          <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                          </a>
+                                        </div>
+                                        </div>
+
+                                      <div class="modal-body">
+                                       <h3 class="title text-center">Text</h3>
+                                        <h5>{{ report.description }}</h5> <br>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div><!--modal end-->
+
+
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div><!--/Response-area-->
+
+                <div class="replay-box">
+                    <div class="row">
+                        <form action="{% url 'cook:a_event' one_event.eid %}" method="post" enctype="multipart/form-data">
+                        <div class="col-sm-4">
+                            <h2>Write a report</h2>
+                            <div class="blank-arrow">
+                                {% csrf_token %}
+                                {{ formset.management_form }}
+                                {% for form in formset.forms %}
+                                    {{ form }}
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="text-area">
+                                <div class="blank-arrow">
+                                    <label>Description</label>
+                                </div>
+                                <textarea id="description" name="description" rows="11"></textarea>
+                                <button type="submit" class="btn btn-primary">Submit Report</button>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div><!--/Repaly Box-->
+            </div>
+
+            <div class="col-sm-4">
+            <div class="single-blog-post">
+                <h2 class="title text-center">Details</h2>
+                <h5>Location: <h4>{{ one_event.location }}</h4></h5>
+                <h5>Date: <h4>{{ one_event.time.date }}</h4></h5>
+                <h5>Time: <h4>{{ one_event.time.time }}</h4></h5>
+            <br>
+            <br>
+                {% now "m-d-Y" as todays_date %}
+                {% if todays_date > one_event.time|date:"m-d-Y" %}
+                    <h5>The event has passed.</h5>
+                {% elif member is None %}
+                    <h5>You are not the group member! Join the group now!</h5>
+                    <a class="btn btn-primary" href="{% url 'cook:a_group' one_group.gid %}">Join Now</a>
+                {% elif rsvp is None %}
+                    <h5>You are not RSVP yet! RSVP now!</h5>
+                    <form action="{% url 'cook:rsvp' %}" method="post">
+                    {% csrf_token %}
+                    <input id="event_id" name="event_eid" value="{{ one_event.eid }}" type="hidden"/>
+                    <button type="submit" class="btn btn-primary">RSVP</button>
+                    </form>
+                {% else %}
+                    <h5>You have already RSVP!</h5>
+                        <a href="{% url 'cook:delete_rsvp' one_event.eid %}"><button class="btn btn-primary">Cancel RSVP</button></a>
+                {% endif %}
+            </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

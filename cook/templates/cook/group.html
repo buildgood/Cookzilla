@@ -1,0 +1,27 @@
+{% extends 'cook/recipe.html' %}
+{% block stag %}{% endblock %}
+{% load staticfiles %}
+
+{% block item %}
+<div class="col-sm-9 padding-right">
+    <div class="features_items"><!--features_items-->
+        <h2 class="title text-center">Groups you like</h2>
+
+        {% for group in all_group %}
+        <div class="col-sm-4">
+            <div class="product-image-wrapper">
+                <div class="single-products">
+                    <div class="productinfo text-center">
+                        <img />
+                        <h2>{{ group.name }}&nbsp;</h2>
+                        <p>&nbsp;</p>
+                        <a href="{% url 'cook:a_group' group.gid %}" class="btn btn-default add-to-cart">View Detail</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div><!--features_items-->
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'cook/midheader.html' %}
+{% load staticfiles %}
+
+{% block body %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="blog-post-area">
+                    <h2 class="title text-center">Group you like</h2>
+                    <div class="single-blog-post">
+                        <h2>{{ one_group.name }}</h2>
+                        <a href="">
+                            <img src="{% static 'cook/images/home/group.png' %}" alt="">
+                        </a>
+                        <h2 class="title text-center">Description</h2>
+                        <p>{{ one_group.description }}</p> <br>
+                    </div>
+                </div><!--/blog-post-area-->
+
+             {% if all_member.count > 0 %}
+                    <div class="recommended_items"><!--recommended_items-->
+						<h2 class="title text-center">Members</h2>
+						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+							<div class="carousel-inner">
+                                    {% for member in all_member %}
+                                        {% if forloop.counter0|divisibleby:"3" %}
+                                            {% if forloop.counter == 1 %}
+                                                <div class="item active">
+                                                {% else %}
+                                                <div class="item">
+                                                {% endif %}
+                                        {% endif %}
+									<div class="col-sm-4">
+										<div class="product-image-wrapper">
+											<div class="single-products">
+												<div class="productinfo text-center">
+													<img/>
+													<p>&nbsp;</p>
+													<a href="" class="btn btn-default add-to-cart">{{ member.username.username }}</a>
+												    <p>{{ member.username.profile.introduction }}</p>
+                                                    <p></p>
+                                                </div>
+
+											</div>
+										</div>
+									</div>
+                                        {% if forloop.counter|divisibleby:"3" or forloop.counter == all_member.count %}
+                                        </div>
+                                        {% endif %}
+									{% endfor %}
+							</div>
+							 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+								<i class="fa fa-angle-left"></i>
+							  </a>
+							  <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+								<i class="fa fa-angle-right"></i>
+							  </a>
+						</div>
+					</div><!--/recommended_items-->
+                    {% endif %}
+
+            </div>
+
+            <div class="col-sm-4">
+            <div class="single-blog-post">
+                <h2 class="title text-center">Details</h2>
+                {% if member is None %}
+                <h4>You are not a member yet. Join now!</h4> <br>
+                <form action="{% url 'cook:join_group' %}" method="post">
+                    {% csrf_token %}
+                    <input id="group_id" name="group_gid" value="{{ one_group.gid }}" type="hidden"/>
+                    <button type="submit" class="btn btn-primary">Join</button>
+                </form>
+                {% else %}
+                <h4>You are already a member.</h4> <br>
+                    <a href="{% url 'cook:delete_group' one_group.gid %}"><button class="btn btn-primary">Withdraw from the group</button></a>
+                {% endif %}
+            </div>
+            <br>
+            <br>
+            <br>
+
+            <div class="brands_products"><!--brands_products-->
+                <h2 class="title text-center">Upcoming Events</h2>
+                <div class="brands-name">
+                    <ul class="nav nav-pills nav-stacked">
+                        {% for event in all_event %}
+                        <li><a href=""> {{ event.title }}<span class="pull-right">{{ event.time }}</span></a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div><!--/brands_products-->
+            </div>
+
+        </div>
+    </div>
+</section>
+<br>
+<br>
+{% endblock %}
